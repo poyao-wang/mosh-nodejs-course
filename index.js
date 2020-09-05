@@ -4,3 +4,11 @@ mongoose
   .connect("mongodb://localhost/playground")
   .then(() => console.log("Connected to Mongodb..."))
   .catch((err) => console.log("Could not connect to MongoDB...", err));
+
+const courseSchema = new mongoose.Schema({
+  name: String,
+  auther: String,
+  tags: [String],
+  date: { type: Date, default: Date.now },
+  isPublished: Boolean,
+});
