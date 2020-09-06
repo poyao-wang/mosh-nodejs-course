@@ -32,7 +32,7 @@ async function getCourses() {
     .find({ author: "Mosh", isPublished: true })
     .limit(10)
     .sort({ name: 1 }) // 1 for ascending, -1 for descending
-    .select({ name: 1, tags: 1 });
+    .count();
   console.log(courses);
 }
 
