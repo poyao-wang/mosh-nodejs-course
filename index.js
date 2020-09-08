@@ -27,12 +27,16 @@ async function getCourses() {
 }
 
 async function updateCourse(id) {
-  const result = await Course.findByIdAndUpdate(id, {
-    $set: {
-      author: "Jack",
-      isPublished: true,
+  const result = await Course.findByIdAndUpdate(
+    id,
+    {
+      $set: {
+        author: "Mosh",
+        isPublished: false,
+      },
     },
-  });
+    { new: true }
+  );
   console.log(result);
 }
 
