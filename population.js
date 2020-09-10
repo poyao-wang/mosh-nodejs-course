@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
 mongoose
-  .connect("mongodb://localhost/playground")
+  .connect("mongodb://localhost/playground", {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false,
+  })
   .then(() => console.log("Connected to MongoDB..."))
   .catch((err) => console.error("Could not connect to MongoDB...", err));
 
@@ -47,12 +51,12 @@ async function createCourse(name, author) {
 }
 
 async function listCourses() {
-  const courses = await Course.find().select("name");
+  const courses = await Course
+    //
+    .find()
+    .populate("author", "name -_id")
+    .select("name author");
   console.log(courses);
 }
 
-// createAuthor('Mosh', 'My bio', 'My Website');
-
-createCourse("Node Course", "5f59d1bba2f51c83ce5ad885");
-
-// listCourses();
+listCourses();
