@@ -8,6 +8,7 @@ mongoose
   .connect("mongodb://localhost/vidly", {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then(() => console.log("Connected to Mongodb..."))
   .catch((err) => console.log("Could not connect to MongoDB...", err));
