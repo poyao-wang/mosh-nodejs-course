@@ -34,9 +34,6 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
-const p = Promise.reject(new Error("Simulating an async error..."));
-p.then(() => console.log("Done"));
-
 mongoose
   .connect("mongodb://localhost/vidly", {
     useNewUrlParser: true,
