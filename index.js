@@ -15,6 +15,11 @@ const rentals = require("./routes/rentals");
 const users = require("./routes/users");
 const auth = require("./routes/auth");
 
+process.on("uncaughtException", (ex) => {
+  console.log("We got a uncaught exception");
+  winston.error(ex.message, ex);
+});
+
 winston.add(winston.transports.File, { filename: "logfile.log" });
 winston.add(winston.transports.MongoDB, {
   db: "mongodb://localhost/vidly",
@@ -25,6 +30,8 @@ if (!config.get("jwtPrivateKey")) {
   console.log("FATAL ERROR: jwtPrivateKey is not defined.");
   process.exit(1);
 }
+
+throw new Error("Something failed during startup");
 
 mongoose
   .connect("mongodb://localhost/vidly", {
