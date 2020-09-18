@@ -4,11 +4,11 @@ require("winston-mongodb");
 const config = require("config");
 const Joi = require("joi");
 Joi.objectId = require("joi-objectid")(Joi);
-const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
 
 require("./startup/routes")(app);
+require("./startup/db")();
 
 winston.handleExceptions(
   new winston.transports.File({ filename: "uncaughtExceptions.log" })
@@ -28,16 +28,6 @@ if (!config.get("jwtPrivateKey")) {
   console.log("FATAL ERROR: jwtPrivateKey is not defined.");
   process.exit(1);
 }
-
-mongoose
-  .connect("mongodb://localhost/vidly", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    autoIndex: false,
-  })
-  .then(() => console.log("Connected to Mongodb..."))
-  .catch((err) => console.log("Could not connect to MongoDB...", err));
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
