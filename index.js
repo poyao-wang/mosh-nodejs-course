@@ -20,6 +20,11 @@ process.on("uncaughtException", (ex) => {
   winston.error(ex.message, ex);
 });
 
+process.on("unhandledRejection", (ex) => {
+  console.log("We got a unhandled rejection");
+  winston.error(ex.message, ex);
+});
+
 winston.add(winston.transports.File, { filename: "logfile.log" });
 winston.add(winston.transports.MongoDB, {
   db: "mongodb://localhost/vidly",
@@ -31,7 +36,8 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
-throw new Error("Something failed during startup");
+const p = Promise.reject(new Error("Simulating an async error..."));
+p.then(() => console.log("Done"));
 
 mongoose
   .connect("mongodb://localhost/vidly", {
