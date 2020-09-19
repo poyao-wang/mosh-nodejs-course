@@ -1,1 +1,3 @@
-test("Our first test", () => {});
+test("Our first test", () => {
+  throw new Error("something failed");
+});
