@@ -28,7 +28,7 @@ describe("/api/genres", () => {
   });
   describe("GET /:id", () => {
     //
-    it("should return an genre object with a valid id", async () => {
+    it("should return an genre if valid id is passed", async () => {
       const genre = new Genre({ name: "genre1" });
       await genre.save();
 
