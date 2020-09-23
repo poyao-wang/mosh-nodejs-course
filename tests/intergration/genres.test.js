@@ -44,6 +44,21 @@ describe("/api/genres", () => {
     });
   });
   describe("POST /", () => {
+    let token;
+    let name;
+
+    const exec = async () => {
+      return request(sever)
+        .post("/api/genres")
+        .set("x-auth-token", token)
+        .send({ name });
+    };
+
+    beforeEach(() => {
+      token = new User().generateAuthToken();
+      name = "genre1";
+    });
+
     it("should return 401 if client is not logged in", async () => {
       const res = await request(sever)
         .post("/api/genres")
