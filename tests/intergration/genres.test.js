@@ -101,4 +101,34 @@ describe("/api/genres", () => {
       expect(res.body).toHaveProperty("name");
     });
   });
+  describe("PUT /:id", () => {
+    //happy path
+    it("should return 400 if invalid name is passed", async () => {
+      const id = mongoose.Types.ObjectId();
+      const res = await request(sever)
+        .put(`/api/genres/${id}`)
+        .send({ name: "1234" });
+      expect(res.status).toBe(400);
+    });
+
+    it("should return 404 if genre of the given id was not found", async () => {
+      const id = mongoose.Types.ObjectId();
+      const res = await request(sever)
+        .put(`/api/genres/${id}`)
+        .send({ name: "genre1" });
+      expect(res.status).toBe(404);
+    });
+
+    it("should return a updated genre if a valid id is passed", async () => {
+      //
+      const genre = new Genre({ name: "genre1" });
+      await genre.save();
+
+      const res = await request(sever)
+        .put(`/api/genres/${genre._id}`)
+        .send({ name: genre.name });
+      expect(res.status).toBe(200);
+      expect(res.body).toHaveProperty("name", genre.name);
+    });
+  });
 });
