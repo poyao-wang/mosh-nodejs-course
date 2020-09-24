@@ -131,4 +131,59 @@ describe("/api/genres", () => {
       expect(res.body).toHaveProperty("name", genre.name);
     });
   });
+  describe("DELETE /:id", () => {
+    //
+    it("should return 403 if user is not admin", async () => {
+      //
+      const token = new User({
+        isAdmin: false,
+      }).generateAuthToken();
+      const genre = new Genre({ name: "genre1" });
+      await genre.save();
+
+      const id = genre._id;
+
+      const res = await request(sever)
+        .delete(`/api/genres/${id}`)
+        .set("x-auth-token", token)
+        .send({ name });
+
+      expect(res.status).toBe(403);
+    });
+
+    it("should return 404 if genre with the given id was not found", async () => {
+      //
+      const token = new User({
+        isAdmin: true,
+      }).generateAuthToken();
+      const genre = new Genre({ name: "genre1" });
+      await genre.save();
+
+      const id = mongoose.Types.ObjectId();
+
+      const res = await request(sever)
+        .delete(`/api/genres/${id}`)
+        .set("x-auth-token", token)
+        .send({ name });
+
+      expect(res.status).toBe(404);
+    });
+    it("should remove the genres on db if valid token and id is passed", async () => {
+      //
+      const token = new User({
+        isAdmin: true,
+      }).generateAuthToken();
+      const genre = new Genre({ name: "genre1" });
+      await genre.save();
+
+      const id = genre._id;
+
+      const res = await request(sever)
+        .delete(`/api/genres/${id}`)
+        .set("x-auth-token", token)
+        .send({ name });
+
+      expect(res.status).toBe(200);
+    });
+  });
 });
