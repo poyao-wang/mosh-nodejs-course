@@ -1,5 +1,7 @@
 const { Rental } = require("../../models/rental");
 const mongoose = require("mongoose");
+const request = require("supertest");
+
 describe("/api/returns", () => {
   let sever;
   let customerId;
@@ -32,9 +34,11 @@ describe("/api/returns", () => {
     await Rental.remove({});
   });
 
-  it("should work", async () => {
-    const result = await Rental.findById(rental._id);
-    // console.log(result);
-    expect(result).not.toBeNull();
+  it("should return 401 if client is not logged in", async () => {
+    const res = await request(sever)
+      .post("/api/returns")
+      .send({ customerId, movieId });
+
+    expect(res.status).toBe(401);
   });
 });
