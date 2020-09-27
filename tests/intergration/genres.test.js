@@ -15,7 +15,7 @@ describe("/api/genres", () => {
   });
   describe("GET /", () => {
     it("should return all genres", async () => {
-      Genre.collection.insertMany([
+      await Genre.collection.insertMany([
         //
         { name: "genre1" },
         { name: "genre2" },
