@@ -16,7 +16,6 @@ describe("/api/genres", () => {
   describe("GET /", () => {
     it("should return all genres", async () => {
       await Genre.collection.insertMany([
-        //
         { name: "genre1" },
         { name: "genre2" },
       ]);
@@ -146,7 +145,7 @@ describe("/api/genres", () => {
       const res = await request(sever)
         .delete(`/api/genres/${id}`)
         .set("x-auth-token", token)
-        .send({ name });
+        .send({ name: "genre1" });
 
       expect(res.status).toBe(403);
     });
@@ -164,10 +163,11 @@ describe("/api/genres", () => {
       const res = await request(sever)
         .delete(`/api/genres/${id}`)
         .set("x-auth-token", token)
-        .send({ name });
+        .send({ name: "genre1" });
 
       expect(res.status).toBe(404);
     });
+
     it("should remove the genres on db if valid token and id is passed", async () => {
       //
       const token = new User({
@@ -181,7 +181,7 @@ describe("/api/genres", () => {
       const res = await request(sever)
         .delete(`/api/genres/${id}`)
         .set("x-auth-token", token)
-        .send({ name });
+        .send({ name: "genre1" });
 
       expect(res.status).toBe(200);
     });
