@@ -3,8 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "jest": {
+    "testEnvironment": "node"
+  },
   "scripts": {
-    "test": "jest --watchAll --verbose --coverage"
+    "test": "jest --watchAll --verbose --coverage --maxWorkers=1"
   },
   "keywords": [],
   "author": "",
