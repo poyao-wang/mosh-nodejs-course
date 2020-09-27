@@ -2,6 +2,7 @@ const { Rental } = require("../../models/rental");
 const { User } = require("../../models/user");
 const mongoose = require("mongoose");
 const request = require("supertest");
+const moment = require("moment");
 
 describe("/api/returns", () => {
   let sever;
@@ -100,7 +101,7 @@ describe("/api/returns", () => {
   });
 
   it("should calculate the rental fee if request is valid", async () => {
-    rental.dateOut = new Date() - 1000 * 60 * 60 * 24 * 7;
+    rental.dateOut = moment().add(-7, "days");
     await rental.save();
 
     const res = await exec();
@@ -108,6 +109,6 @@ describe("/api/returns", () => {
 
     expect(res.status).toBe(200);
     expect(typeof rentalInDb.rentalFee).toBe("number");
-    expect(rentalInDb.rentalFee).toBe(7);
+    expect(rentalInDb.rentalFee).toBe(14);
   });
 });
