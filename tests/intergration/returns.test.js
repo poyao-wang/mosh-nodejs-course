@@ -13,7 +13,7 @@ describe("/api/returns", () => {
   const exec = () => {
     return request(sever)
       .post("/api/returns")
-      .set("x-auth-tohen", token)
+      .set("x-auth-token", token)
       .send({ customerId, movieId });
   };
 
