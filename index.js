@@ -1,3 +1,4 @@
+const config = require("config");
 const morgan = require("morgan");
 const helmet = require("helmet");
 const Joi = require("joi");
@@ -14,6 +15,10 @@ if (app.get("env") === "development") {
   console.log("Morgan enabled...");
 }
 app.use(logger);
+
+// Configuration
+console.log(`Application Name: ${config.get("name")}`);
+console.log(`Mail Sever: ${config.get("mail.host")}`);
 
 const courses = [
   { id: 1, name: "course1" },
