@@ -19,6 +19,7 @@ app.use(logger);
 // Configuration
 console.log(`Application Name: ${config.get("name")}`);
 console.log(`Mail Sever: ${config.get("mail.host")}`);
+console.log(`Mail Password: ${config.get("mail.password")}`);
 
 const courses = [
   { id: 1, name: "course1" },
