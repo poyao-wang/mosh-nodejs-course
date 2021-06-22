@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 mongoose
-  .connect("mongodb://localhost/mongo-exercises")
+  .connect("mongodb://localhost/playground")
   .then(() => console.log("Connected to Mongodb..."))
   .catch((err) => console.log("Could not connect to MongoDB...", err));
 
@@ -9,41 +9,36 @@ const courseSchema = new mongoose.Schema({
   name: String,
   author: String,
   tags: [String],
-  date: Date,
+  date: { type: Date, default: Date.now },
   isPublished: Boolean,
-  price: Number,
 });
 
 const Course = mongoose.model("Courses", courseSchema);
 
+async function createCourse() {
+  const course = new Course({
+    name: "Angular Course",
+    author: "Mosh",
+    tags: ["angular", "frontend"],
+    isPublished: true,
+  });
+  const result = await course.save();
+  console.log(result);
+}
+
 async function getCourses() {
+  const pageNumber = 2;
+  const pageSize = 10;
+  // /api/courses?pageNumber=2&pageSize=10
+
   const courses = await Course
     //
-    .find({ isPublished: true })
-    .or([{ price: { $gte: 15 } }, { name: /.*by.*/i }])
-    .sort("-price")
-    .select("name author price");
+    .find({ author: "Mosh", isPublished: true })
+    .skip((pageNumber - 1) * pageSize)
+    .limit(pageSize)
+    .sort({ name: 1 }) // 1 for ascending, -1 for descending
+    .count();
   console.log(courses);
 }
 
-async function updateCourse(id) {
-  const result = await Course.findByIdAndUpdate(
-    id,
-    {
-      $set: {
-        author: "Mosh",
-        isPublished: false,
-      },
-    },
-    { new: true }
-  );
-  console.log(result);
-}
-
-async function removeCourse(id) {
-  const result = await Course.findByIdAndRemove(id);
-
-  console.log(result);
-}
-
-removeCourse("5f571b0a628ca6fbd195acb4");
+getCourses();
